@@ -8,10 +8,10 @@
  */
 function transformStateWithClones(state, actions) {
   const stateHistory = [];
-  let currentState = { ...state };
+  let currentState = Object.assign({}, state);
 
   for (const action of actions) {
-    const stateCopy = { ...currentState };
+    const stateCopy = Object.assign({}, currentState);
 
     switch (action.type) {
       case 'addProperties': {
@@ -32,10 +32,14 @@ function transformStateWithClones(state, actions) {
         }
         break;
       }
+
+      default: {
+        throw new Error(`Unknown action type: ${action.type}`);
+      }
     }
 
     stateHistory.push(stateCopy);
-    currentState = { ...stateCopy };
+    currentState = Object.assign({}, stateCopy);
   }
 
   return stateHistory;
